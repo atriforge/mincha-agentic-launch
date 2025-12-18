@@ -1,20 +1,18 @@
 export interface ItineraryActivity {
-  time: string; // e.g., "09:00 AM", or "Morning"
-  name: string; // e.g., "Visit Swayambhunath Stupa"
-  description: string; // Brief details about the activity
-  location: string; // e.g., "Kathmandu Valley"
-  cost?: string; // e.g., "Included", "$5 entry fee", "Optional"
-  notes?: string; // e.g., "Wear comfortable shoes", "Bring water"
-  bookingLink?: string; // Dynamic link for reservations
+  time: string;
+  name: string;
+  description: string;
+  location: string;
+  cost?: string;
 }
 
 export interface Accommodation {
-  type: string[]; // Array of accommodation types (e.g. ['Teahouse', 'Camping'])
-  details?: string; // e.g. "Private bathroom", "Shared facilities"
+  type: string[];
+  details?: string;
 }
 
 export interface Transport {
-  type: string;
+  type: string[];
   duration?: string;
   features: string[];
 }
@@ -26,10 +24,7 @@ export interface ItineraryDay {
   activities: ItineraryActivity[];
   accommodation?: Accommodation;
   transport?: Transport;
-  mealsIncluded?: string; // e.g., "B, L, D" or "Breakfast only"
-  distanceKm?: number;
-  elevationGainM?: number;
-  travelTimeHours?: number;
+  mealsIncluded?: string;
 }
 
 export interface ServiceCategory {
@@ -45,14 +40,9 @@ export interface Trek {
   difficulty: 'Easy' | 'Moderate' | 'Challenging' | 'Hard';
   priceUSD: number;
   priceINR: number;
-  includedServices: ServiceCategory[]; // Categorized services
+  includedServices: ServiceCategory[];
   highlightDescription: string;
   itineraryDays: ItineraryDay[];
-  durationDays?: number;
-  bestSeason?: string[];
-  groupSizeMin?: number;
-  groupSizeMax?: number;
-  gearList?: string[];
 }
 
 export interface Vendor {
@@ -68,12 +58,12 @@ export interface Vendor {
 
 export interface VendorService {
   id: string;
-  vendorId: string; // Linked to Vendor
+  vendorId: string;
   category: 'Transport' | 'Accommodation' | 'Guide' | 'Permits' | 'Other';
-  name: string; // e.g. "Private Jeep (KTM-Pokhara)"
+  name: string;
   priceUSD: number;
   priceINR: number;
-  unit: string; // e.g. "per trip", "per day", "per night"
+  unit: string;
   availability: 'Instant' | 'On Request' | 'Limited';
   lastUpdated: string;
 }
@@ -86,14 +76,11 @@ export interface TrekSuggestion {
   priceDisplay: string;
   whatsappLink: string;
   pdfUrl: string;
-  gpxUrl: string;
-  description?: string;
 }
 
 export interface MinchaResponse {
   response: string;
   suggestedTrek?: TrekSuggestion;
-  vendorUpdateAction?: string; // Signal UI to open vendor dashboard
 }
 
 export interface Message {
