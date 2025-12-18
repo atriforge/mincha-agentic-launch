@@ -72,25 +72,35 @@ const App = () => {
     setIsLoading(true);
 
     try {
-      const apiKey = import.meta.env.VITE_QWEN_API_KEY;
-      if (!apiKey) throw new Error("Missing VITE_QWEN_API_KEY");
+     // Get Qwen API key from .env.local
+const apiKey = import.meta.env.VITE_QWEN_API_KEY;
+if (!apiKey) throw new Error("Missing VITE_QWEN_API_KEY");
 
-      const systemPrompt = getSystemInstruction(language, itineraries);
-      const chatHistory = [
-        { role: "system", content: systemPrompt },
-        ...messages.slice(1).map(m => ({ role: m.role === 'user' ? 'user' : 'assistant', content: m.text })),
-        { role: 'user', content: userText }
-      ];
+const systemPrompt = getSystemInstruction(language, itineraries);
+const chatHistory = [
+  { role: "system", content: systemPrompt },
+  ...messages.slice(1).map(m => ({ role: m.role === 'user' ? 'user' : 'assistant', content: m.text })),
+  { role: 'user', content: userText }
+];
 
-      const res = await fetch("https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation", {
-        method: "POST",
-        headers: { "Authorization": `Bearer ${apiKey}`, "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "qwen-max",
-          input: { messages: chatHistory },
-          parameters: { result_format: "message", max_tokens: 1024 }
-        })
-      });
+const res = await fetch("https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation", {
+  method: "POST",
+  headers: {
+    "Authorization": `Bearer ${apiKey}`,
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    model: "qwen-max", // or qwen-turbo, qwen-plus
+    input: {
+      messages: chatHistory
+    },
+    parameters: {
+      result_format: "message",
+      max_tokens: 1024,
+      temperature: 0.7
+    }
+  })
+});
 
       if (!res.ok) throw new Error("Qwen API error");
       const data = await res.json();
